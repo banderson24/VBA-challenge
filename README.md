@@ -122,7 +122,7 @@ Create a script that runs through all the stocks for one year and outputs the fo
         
       - That helped me get started on the code, but I couldn't get it to work using the information I found on that page. Eventually, I ended up on a page on stack overflow that was talking about Max and Min functions and provided some code for how it worked. Specifically, they started talking about using loops to iterate through the spreadsheet cell by cell. It was then I made the jump to checking if the value of the next cell was greater or lesser than the current cell and then keep performing that while iterating through each row, which is the route I ended up going. That way I would check each cell to see if it was greater or less than the previous cell, and if so, then I would set that as the new max or min value
       - Here's the stackoverflow link (https://stackoverflow.com/questions/45072650/finding-max-value-of-a-loop-with-vba)
-      - I also used ChatGTP to test my code when I couldn't get it to work properly. ChatGPT helped clean up some of the syntax and get everything working in the proper format
+      - I also used ChatGPT to test my code when I couldn't get it to work properly. ChatGPT helped clean up some of the syntax and get everything working in the proper format
   
   8. Make the appropriate adjustments to your VBA script to enable it to run on every worksheet (that is, every year) at once.
      - I looked at the class assignments for this one. The Credit Card activity specifically provides some code on how to iterate through each sheet in the workbook
@@ -150,6 +150,12 @@ Create a script that runs through all the stocks for one year and outputs the fo
             
           End If
 
+      - I also set the decimal amount for this entire column to 2. I found this code on a MrExcel.com (https://www.mrexcel.com/board/threads/vba-change-number-of-decimal-places-of-a-percentage.521221/)
+    
+            'Format the Yearly Change Column to be 2 decimal places
+        
+            ws.Columns("J").NumberFormat = "0.00"
+
 
   10. The assignment wasn't really clear on what was supposed to be done here, but I assumed we were supposed to use VBA to set the format of the percent change column to percent
         - For this assignment I originally tried to use similar code to what we learned in class as to how to set the currency, but I was unable to make that work. So I found some code online in order to turn the whole column to be formatting as percentage with 2 decimal places
@@ -158,10 +164,9 @@ Create a script that runs through all the stocks for one year and outputs the fo
                 ws.Columns("K").NumberFormat = "0.00%"
                 ws.Range("Q2:Q3").NumberFormat = "0.00%"
 
+                
+
 
         - I found this code on MrExcel.com (https://www.mrexcel.com/board/threads/vba-change-number-of-decimal-places-of-a-percentage.521221/)
   
     
-
-
-**Resources Used**
