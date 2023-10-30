@@ -1,0 +1,165 @@
+Sub Module_2_Challege()
+    
+    'Set the code up to run on each worksheet
+    For Each ws In Worksheets
+    
+    'Inserted the Column headers I wanted with the following code
+    ws.Cells(1, 9).Value = "Ticker"
+    ws.Cells(1, 10).Value = "Yearly Change"
+    ws.Cells(1, 11).Value = "Percent Change"
+    ws.Cells(1, 12).Value = "Total Stock Volume"
+    ws.Cells(1, 16).Value = "Ticker"
+    ws.Cells(1, 17).Value = "Value"
+    ws.Cells(2, 15).Value = "Greatest % Increase"
+    ws.Cells(3, 15).Value = "Greatest % Decrease"
+    ws.Cells(4, 15).Value = "Greatest Total Volume"
+    
+    'Set a variable for holding the ticker symbol
+    Dim Ticker As String
+    
+    'Keep track of location for each stock in summary table
+    Dim Summary_Table_Row As Integer
+    Summary_Table_Row = 2
+    
+    'Keep track of open price
+    Dim Open_Price As Double
+    Open_Price = ws.Cells(2, 3).Value
+    
+    'Keep track of close price
+    Dim Close_Price As Double
+    
+    'Keep Track of yearly change for each stock
+    Dim Yearly_Change As Double
+    
+    'Keep track of percent change for each stock
+    Dim Percent_Change As Double
+    
+    'Keep Track of total stock volume
+    Dim Total_Stock_Volume As Double
+    Total_Stock_Volume = 0
+    
+    'Instead of manually calculating rows I used the last row
+    lastrow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+    
+    'Loop through all stock data
+    For i = 2 To lastrow
+    
+        'Start the if statement by finding where the cell is not equal to the next cell
+        If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+            
+            'Set ticker symbol
+            Ticker = ws.Cells(i, 1).Value
+            
+            'Set Close Price
+            Close_Price = ws.Cells(i, 6).Value
+            
+            'Set yearly change
+            Yearly_Change = Close_Price - Open_Price
+            
+            'Set percent change
+            Percent_Change = Yearly_Change / Open_Price
+        
+            'Add to total stock volume
+            Total_Stock_Volume = Total_Stock_Volume + ws.Cells(i, 7).Value
+            
+            'Print ticker symbol in summary table
+            ws.Range("I" & Summary_Table_Row).Value = Ticker
+            
+            'Print Yearly change in summary table
+            ws.Range("J" & Summary_Table_Row).Value = Yearly_Change
+            
+            'Print percent change in summary table
+            ws.Range("K" & Summary_Table_Row).Value = Percent_Change
+            
+            'Print Total Volume to Summary Table
+            ws.Range("L" & Summary_Table_Row).Value = Total_Stock_Volume
+            
+            'Add one to the summary table row
+            Summary_Table_Row = Summary_Table_Row + 1
+            
+            'Reset total stock volume
+            Total_Stock_Volume = 0
+            
+            'Reset Open Price
+            Open_Price = ws.Cells(i + 1, 3).Value
+            
+         'If the cell following a row is the same brand
+        Else
+        
+            'Add to the total stock volume
+            Total_Stock_Volume = Total_Stock_Volume + ws.Cells(i, 7).Value
+            
+        End If
+        
+    Next i
+    
+    'Set last row for summary table
+    table_lastrow = ws.Cells(Rows.Count, 9).End(xlUp).Row
+
+    'Declare Variables to be used for Greatest % Increase, Greatest % Decrease, and Max Total Volume
+    Dim Max_Value As Double
+    Max_Value = ws.Cells(2, 11).Value
+    
+    Dim Min_Value As Double
+    Min_Value = ws.Cells(2, 11).Value
+    
+    Dim Max_Volume As Double
+    Max_Volume = ws.Cells(2, 12).Value
+
+    'Create loop to look through the summary table to return answers
+    For i = 2 To table_lastrow
+    
+        'If Statement to return the greatest % increase
+        If ws.Cells(i + 1, 11).Value > Max_Value Then
+        
+            Max_Value = ws.Cells(i + 1, 11).Value
+            
+            ws.Cells(2, 17).Value = Max_Value
+            
+            ws.Cells(2, 16).Value = ws.Cells(i + 1, 9).Value
+            
+        'If Statement to return the greatest % decrease
+        ElseIf ws.Cells(i + 1, 11).Value < Min_Value Then
+        
+                Min_Value = ws.Cells(i + 1, 11).Value
+            
+                ws.Cells(3, 17).Value = Min_Value
+            
+                ws.Cells(3, 16).Value = ws.Cells(i + 1, 9).Value
+                
+        End If
+        
+        'If Statement to return the greatest
+        If ws.Cells(i + 1, 12).Value > Max_Volume Then
+        
+                Max_Volume = ws.Cells(i + 1, 12).Value
+            
+                ws.Cells(4, 17).Value = Max_Volume
+            
+                ws.Cells(4, 16).Value = ws.Cells(i + 1, 9).Value
+        
+        End If
+        
+         'Statement to Color the cells depending on their value
+        If ws.Cells(i, 10).Value > 0 Then
+            
+            'Set the Cell Colors to Green
+            ws.Cells(i, 10).Interior.ColorIndex = 4
+            
+        ElseIf ws.Cells(i, 10).Value < 0 Then
+        
+            'Set the Cell Colors to Red
+            ws.Cells(i, 10).Interior.ColorIndex = 3
+            
+        End If
+    
+    Next i
+    
+    'Format the Percent Change Column to be Percentage with the desired decimal places
+    ws.Columns("K").NumberFormat = "0.00%"
+    ws.Range("Q2:Q3").NumberFormat = "0.00%"
+    
+    
+Next ws
+
+End Sub
