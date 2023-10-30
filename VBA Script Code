@@ -159,7 +159,9 @@ Sub Module_2_Challege()
     ws.Columns("K").NumberFormat = "0.00%"
     ws.Range("Q2:Q3").NumberFormat = "0.00%"
     
-    
+    'Format the Yearly Change Column to be 2 decimal places
+    ws.Columns("J").NumberFormat = "0.00"
+
 Next ws
 
 End Sub
